@@ -55,7 +55,7 @@ from importcode.mythtvinterface import Mythtvinterface
 #
 try:
     from lxml import etree as etree
-except Exception, errmsg:
+except Exception as errmsg:
     sys.stderr.write(u'''
 Importing the "lxml" python libraries failed on
 Error: (%s)\n''' % errmsg)
@@ -329,7 +329,7 @@ class OutStreamEncoder(object):
     def write(self, obj):
         """Wraps the output stream, encoding Unicode strings with the
         specified encoding"""
-        if isinstance(obj, unicode):
+        if isinstance(obj, str):
             try:
                 self.out.write(obj.encode(self.encoding))
             except IOError:
@@ -343,8 +343,8 @@ class OutStreamEncoder(object):
     def __getattr__(self, attr):
         """Delegate everything but write to the stream"""
         return getattr(self.out, attr)
-sys.stdout = OutStreamEncoder(sys.stdout, 'utf8')
-sys.stderr = OutStreamEncoder(sys.stderr, 'utf8')
+sys.stdout = OutStreamEncoder(sys.stdout, 'utf-8')
+sys.stderr = OutStreamEncoder(sys.stderr, 'utf-8')
 #
 #
 class Mythtvlosslesscut(object):
@@ -360,7 +360,7 @@ class Mythtvlosslesscut(object):
         #
         try:
             self.configuration = get_config(opts)
-        except Exception, errmsg:
+        except Exception as errmsg:
             sys.stderr.write(
                 # TRANSLATORS: Please leave %s as it is,
                 # because it is needed by the program.
@@ -378,7 +378,7 @@ class Mythtvlosslesscut(object):
         try:
             self.mythtvinterface = Mythtvinterface(self.logger,
                                                     self.configuration)
-        except Exception, errmsg:
+        except Exception as errmsg:
             sys.stderr.write(
                 # TRANSLATORS: Please leave %s as it is,
                 # because it is needed by the program.
@@ -409,7 +409,7 @@ Error(%s)\n''') % errmsg)
         try:
             self.configuration['mythutil'] = check_dependancies(
                     self.configuration)
-        except Exception, errmsg:
+        except Exception as errmsg:
             sys.stderr.write(
                 # TRANSLATORS: Please leave %s as it is,
                 # because it is needed by the program.
@@ -468,6 +468,7 @@ You are ready to perform loss less cuts on MythTV recorded videos.
             sys.exit(int(self.jobstatus.UNKNOWN))
         #
         # Verify that one and only one of these options have been selected
+        sys.stdout.write(common.LL_START_END_FORMAT)
         count = 0
         for key in ['replace', 'mythvideo_export', 'movepath']:
             if self.configuration[key]:
@@ -495,7 +496,7 @@ _(u'''You must ONLY select ONE of these three options "-e", "-m", "r". See:
             # Thank you for contributing to this project.
 _(u'''Start loss less commercial cut of "%s" at: %s''') % (
             self.configuration['recordedfile'],
-            self.processing_started.strftime(common.LL_START_END_FORMAT)))
+            self.processing_started.strftime(common.LL_START_END_FORMAT).decode))
         #
         self._display_variables()
         #
@@ -639,7 +640,7 @@ ID sudid text "%s", skipping this subtitle track.''') % \
                 if not index == -1:
                     self.configuration['subpage'] = (
                                         subid.text)[index+2:].strip()
-            except Exception, errmsg:
+            except Exception as errmsg:
                 # Deal with problems with the subtitle data
                 verbage = _(
 u'''Getting Subtitle streamid %s extraction information failed
@@ -665,7 +666,7 @@ Error: "%s"''') % (self.configuration['streamid'], errmsg)
                 try:
                     fileh = open(
                             self.configuration['projectx_ini_path'], 'w')
-                except IOError, errmsg:
+                except IOError as errmsg:
                     # TRANSLATORS: Please leave %s as it is,
                     # because it is needed by the program.
                     # Thank you for contributing to this project.
@@ -1327,7 +1328,7 @@ Check the log file: "%(logfile)s"''') % self.configuration
         if self.configuration['mythvideo_export']:
             try:
                 self.mythtvinterface.add_to_mythvideo()
-            except self.mythtvinterface.MythError, errmsg:
+            except self.mythtvinterface.MythError as errmsg:
                 verbage = _(
 u'''The export to MythVideo failed, aborting script.
 Error: %s''') % errmsg
@@ -1450,7 +1451,7 @@ Error: %s''') % (common.MKVMERGE, result[1])
                         os.path.getsize(self.configuration['mkv_file'])
                 try:
                     self.mythtvinterface.add_to_mythvideo()
-                except self.mythtvinterface.MythError, errmsg:
+                except self.mythtvinterface.MythError as errmsg:
                     verbage = _(
 u'''The export to MythVideo failed, aborting script.
 Error: %s''') % errmsg
@@ -1801,7 +1802,7 @@ Title: (%s); Version: description(%s); Author: (%s)
         try:
             if not os.path.isdir(common.CONFIG_DIR):
                 create_cachedir(common.CONFIG_DIR)
-        except Exception, errmsg:
+        except Exception as errmsg:
             # TRANSLATORS: Please leave %s as it is,
             # because it is needed by the program.
             # Thank you for contributing to this project.
@@ -1813,7 +1814,7 @@ copy the file "%s" to "%s", aborting script.
         # Initialize the new configuration with default values file
         try:
             create_config_file()
-        except IOError, errmsg:
+        except IOError as errmsg:
             sys.stderr.write(errmsg)
             exit(int(common.JOBSTATUS().ABORTED))
     #

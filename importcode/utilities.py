@@ -73,7 +73,8 @@ from datetime import datetime, timedelta
 import gettext
 #
 # Indicator specific imports
-import common
+import importcode.common as common
+#import common
 #
 ## Local variables
 _ = gettext.gettext
@@ -645,7 +646,7 @@ _(u' A bash command must be provided.'))
                     #
                     configuration['error_detection'].append(error_args_dict)
                 #
-                except Exception, errmsg:
+                except Exception as errmsg:
                     error_message = err_invalid_variable % option
                     error_message += u'\n\n%s' % errmsg
                     raise Exception(error_message)
@@ -762,7 +763,7 @@ _(u' A bash command must be provided.'))
             if not os.path.isdir(configuration[option]):
                 try:
                     create_cachedir(configuration[option])
-                except Exception, errmsg:
+                except Exception as errmsg:
                     raise Exception(err_bad_path % (option,
                                         configuration[option],
                                         u"Error: " + errmsg))
@@ -1102,7 +1103,7 @@ OR for the Sun Java runtime:
         raise Exception(mkvmerge_err2 %
             ("unknown", common.MKVTOOLNIX_DOWNLOADS_URL,
                                     common.MKVTOOLNIX_SOURCE_URL))
-    if not results[1][index+2:index+5] >= common.MKVMERGE_MIN_VERSION:
+    if not float(results[1][index+2:index+5]) >= float(common.MKVMERGE_MIN_VERSION):
         raise Exception(mkvmerge_err2 %
             (common.MKVMERGE_MIN_VERSION,
             results[1][index+2:index+5], common.MKVTOOLNIX_DOWNLOADS_URL,
@@ -1548,7 +1549,7 @@ def create_config_file():
     # Save the new configuration file
     try:
         fileh = open(common.CONFIG_FILE, 'w')
-    except IOError, errmsg:
+    except IOError as errmsg:
         # TRANSLATORS: Please leave %s as it is,
         # because it is needed by the program.
         # Thank you for contributing to this project.
@@ -1588,7 +1589,7 @@ Error: %s''')
     # Save the new configuration file
     try:
         fileh = open(common.CONFIG_FILE, 'w')
-    except IOError, errmsg:
+    except IOError as errmsg:
         directory, basefilename = os.path.split(common.CONFIG_FILE)
         verbage = err_cannot_create_cfg_file % \
                 (basefilename, directory, errmsg)

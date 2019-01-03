@@ -88,9 +88,9 @@ import time
 from socket import gethostname
 
 # Indicator specific imports
-from utilities import set_language, commandline_call, cleanup_working_dir, \
+from importcode.utilities import set_language, commandline_call, cleanup_working_dir, \
     is_not_punct_char, is_punct_char
-import common
+import importcode.common as common
 
 ## Local variables
 # Language translation specific to this desktop
@@ -199,7 +199,7 @@ You will need to upgrade your MythTV install to at least a v0.%d+Fixes release.'
                     self.OWN_VERSION[1], self.OWN_VERSION[3])
             #
             ## Lossless Cut only supports MythTV v0.24+fixes and higher
-            if self.OWN_VERSION[1] < common.SUPPORTED_VERSIONS:
+            if self.OWN_VERSION[0] <= 0 and self.OWN_VERSION[1] < common.SUPPORTED_VERSIONS:
                 verbage = self.error_messages['VersionError1'] \
                                 % self.configuration['mythtv_version']
                 self.logger.critical(verbage)
@@ -207,7 +207,7 @@ You will need to upgrade your MythTV install to at least a v0.%d+Fixes release.'
             #
             ## Lossless Cut can ONLY support the current git master
             ## pre-released version of MythTV
-            if self.OWN_VERSION[1] <= common.UNSUPPORTED_PRE_VERSION and \
+            if self.OWN_VERSION[0] <= 0 and self.OWN_VERSION[1] <= common.UNSUPPORTED_PRE_VERSION and \
                         not pre.find('pre-') == -1:
                 verbage = self.error_messages['VersionError2'] \
                                 % (self.configuration['mythtv_version'],
@@ -218,7 +218,7 @@ You will need to upgrade your MythTV install to at least a v0.%d+Fixes release.'
             # Establish a MythTV data base connection
             try:
                 self.mythdb = self.MythDB()
-            except self.MythError, errmsg:
+            except self.MythError as errmsg:
                 filename = os.path.expanduser("~") + \
                                 '/.mythtv/config.xml'
                 if not os.path.isfile(filename):
@@ -231,7 +231,7 @@ You will need to upgrade your MythTV install to at least a v0.%d+Fixes release.'
                                             % filename
                     self.logger.critical(verbage)
                     raise Exception(verbage)
-            except Exception, errmsg:
+            except Exception as errmsg:
                 verbage = self.error_messages['CreateInstance'] % errmsg
                 self.logger.critical(verbage)
                 raise Exception(verbage)
@@ -241,14 +241,14 @@ You will need to upgrade your MythTV install to at least a v0.%d+Fixes release.'
                 try:
                     self.mythbeconn = self.MythBE(
                             backend=self.localhostname, db=self.mythdb)
-                except self.MythError, errmsg:
+                except self.MythError as errmsg:
                     verbage = self.error_messages[
                                     'BackendConnectionAttempt'] \
                                     % errmsg.args[0]
                     self.logger.critical(verbage)
                     raise Exception(verbage)
                 self.MythVideo = MythVideo(self.mythdb)
-        except Exception, errmsg:
+        except Exception as errmsg:
             verbage = self.error_messages['BindingsError'] % errmsg
             self.logger.critical(verbage)
             raise Exception(verbage)
@@ -313,7 +313,7 @@ file "%s", aborting script.''') % self.configuration['base_name']
         self.recorded = recorded[0]
         try:
             self.recorded_program = self.recorded.getRecordedProgram()
-        except self.MythError, errmsg:
+        except self.MythError as errmsg:
             # TRANSLATORS: Please leave %s as it is,
             # because it is needed by the program.
             # Thank you for contributing to this project.
@@ -1417,7 +1417,7 @@ _(u'''There is no program guide for this recorded video, skipping getting the ge
         # Copy to MythVideo
         try:
             self.copy()
-        except Exception, errmsg:
+        except Exception as errmsg:
             self.logger.critical(
 _(u'''Export to MythVideo, aborting script.
 Error: %s''') % errmsg)
@@ -1461,19 +1461,28 @@ Copying "%s"''') % self.configuration['mkv_file']
                     + _(u" to myth://Videos@%s/%s") %
                     (self.vid.host, self.vid.filename))
         self.logger.info(verbage)
-        self.stdout.write(verbage + u'\n\n')
+#        self.stdout.write((verbage + u'\n\n'))
         #
-        srcfp = open(self.configuration['mkv_file'], 'r')
+        self.logger.info('1')
+        srcfp = open((self.configuration['mkv_file']).encode('utf-8'), 'r')
+        self.logger.info('2')
         dstfp = self.vid.open('w')
+        self.logger.info('3')
         #
         tsize = 2**24
         while tsize == 2**24:
+            self.logger.info('4')
             tsize = min(tsize, srcsize - dstfp.tell())
+            self.logger.info('5')
             dstfp.write(srcfp.read(tsize))
+            self.logger.info('6')
             htime.append(time.time())
         #
+        self.logger.info('7')
         srcfp.close()
+        self.logger.info('8')
         dstfp.close()
+        self.logger.info('9')
         #
         self.vid.hash = self.vid.getHash()
         #
@@ -1537,7 +1546,7 @@ Copying "%s"''') % self.configuration['mkv_file']
                         self.studio = self.metadata.studios[0]
                     if self.metadata.categories:
                         self.category = self.metadata.categories[0]
-        except self.MythError, errmsg:
+        except self.MythError as errmsg:
             self.logger.info(
                 _(u'''MythError, falling back to generic export.
 Error %s''') % errmsg)
@@ -1596,7 +1605,7 @@ Error %s''') % errmsg)
                         self.studio = self.metadata.studios[0]
                     if self.metadata.categories:
                         self.category = self.metadata.categories[0]
-        except self.MythError, errmsg:
+        except self.MythError as errmsg:
             self.logger.info(
                 _(u'''MythError, falling back to generic export.
 Error %s''') % errmsg)
@@ -1821,7 +1830,7 @@ u'''Adjust the DB records as this is only a sample video file.''')
                 sql_cmd = common.SQL_GET_OR_INSERT['delete_sql'] % del_data
                 try:
                     cursor.execute(sql_cmd)
-                except Exception, errmsg:
+                except Exception as errmsg:
                     verbage = _(u'''This SQL command caused an exception:
 %s
 Error: %s''') % (sql_cmd, errmsg)
@@ -1849,7 +1858,7 @@ Error: %s''') % (sql_cmd, errmsg)
                                                 table][version][1] % record
                 try:
                     cursor.execute(sql_cmd)
-                except Exception, errmsg:
+                except Exception as errmsg:
                     # There are cases where failed inserts are OK like
                     # With duplicate program genre's
                     if table == 'program' or table == 'programgenres':

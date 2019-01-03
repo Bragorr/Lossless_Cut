@@ -211,7 +211,7 @@ MKVTOOLNIX_DOWNLOADS_URL = u'https://www.bunkus.org/videotools/mkvtoolnix/downlo
 MKVTOOLNIX_SOURCE_URL = u'https://www.bunkus.org/videotools/mkvtoolnix/source.html'
 MEDIAINFO = u'mediainfo'
 MEDIAINFO_MIN_VERSION = 'v0.7.5'
-MEDIAINFO_XML = u'--Output=XML "%s"'
+MEDIAINFO_XML = u'--Output=OLDXML "%s"'
 MEDIAINFO_URL = u'http://mediainfo.sourceforge.net/en/Download'
 MEDIAINFO_PPA_URL = u'https://launchpad.net/~shiki/+archive/mediainfo'
 #
