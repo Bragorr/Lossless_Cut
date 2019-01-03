@@ -1,0 +1,59 @@
+Usage: lossless_cut.py usage: lossless_cut.py -aCDefghujklmrsStTvXw [parameters]
+
+
+Options:
+  -h, --help            show this help message and exit
+  -a, --addmetadata     Do NOT add metadata to the mkv video container.
+  -C, --concertcuts     Create individual files from each cut segment and an
+                        optional track naming configuration file. This option
+                        is referred to as "Concert Cuts".
+  -D delayvideo, --delayvideo=delayvideo
+                        Delay option to change when the video track starts by
+                        a positive (start sooner than other tracks) or
+                        negative number (start later than other tracks) in
+                        milliseconds. One second = 1000 This option should
+                        only be chosen by experienced users.
+  -e, --mythvideo_export
+                        Export the final mkv video into MythVideo, this
+                        includes subdirectory creation when necessary.
+  -f recordedfile, --recordedfile=recordedfile
+                        The absolute path and file name of the MythTV
+                        recording.
+  -g, --gencutlist      Generate a cut list if one does not exist but there is
+                        a skip list.
+  -j JOBID, --jobid=JOBID
+                        This is the MythTV JobQueue ID from the "%JOBID%"
+                        variable. This is a mandatory command line option if
+                        the configuration file "error_detection" variables are
+                        used.
+  -k, --keeplog         Keep the log file after the userjob has completed
+                        successfully.
+  -l logpath, --logpath=logpath
+                        Specify a directory path to save the jobs log file
+  -m movepath, --movepath=movepath
+                        Specify a local directory path to move/save the final
+                        mkv video file.
+  -r, --replace_recorded
+                        Replace the recorded video file with the loss less cut
+                        version. Use with caution!
+  -s, --summary         Display a summary of the options that would be used
+                        during processing but exit before processing begins.
+                        Used this for debugging. No changes to the mpg file
+                        occur.
+  -S, --noextratracks   Do not include any subtitle or secondary audio tracks.
+  -t, --test            Test that the environment meets all the scripts
+                        dependencies.
+  -T tracknumber, --tracknumber=tracknumber
+                        Identifies a specific Audio track to copy in
+                        conjunction with the "-S" Strip option. Find the audio
+                        track numbers using a "> mkvmerge -i file.mkv"
+                        command. If there is only one audio track then this
+                        option is meaningless.
+  -u, --usage           Display this help/usage text and exit.
+  -v, --version         Display version and author information
+  -X, --forcemythxxextractor
+                        Force use of mythccextractor as the primary utility to
+                        extract and convert subtitles tracks into SRT format.
+  -w WORKINGPATH, --workingpath=WORKINGPATH
+                        Specify a working directory path to manipulate the
+                        video file

@@ -1,0 +1,30 @@
+Version: ProjectX 0.91.0.00/31.03.2011
+
+TERMS AND CONDITIONS:
+(1) this is a free Java based demux utility.
+(2) It is intended for educational purposes only, as a non-commercial test project.
+(3) released under the terms of the GNU GPL.
+(4) there is NO WARRANTY of any kind attached to this software.
+(5) use it at your own risk and for your own education.
+
+quick CL usage:
+Note: CL doesn't load the GUI components, except with switch [-gui]
+<without options>  ...starts the GUI
+switches and inputfiles can be in any order
+
+options:
+[-ini <path + inifile>] ..use that specified iniFile instead of the standard
+[-dvx1] ..create a .d2v ProjectFile on demux
+[-dvx2] ..create a .d2v ProjectFile + .ac3.wav (RIFF WAVE Header)
+[-dvx3] ..create a .d2v ProjectFile + .mpa.wav (RIFF WAVE Header)
+[-dvx4] ..create a .d2v ProjectFile + .ac3.wav + mpa.wav (RIFF WAVE Header)
+[-out <path>] ..use that specified directory for output
+[-name <filename>] ..use that specified filename for output
+[-cut <file>] ..use that text based file as cutpoint list
+[-chp <file>] ..use that text based file as chapterpoint list
+[-id <tokens>] ..use only these (P)IDs, separated by comma ","
+[-gui] ..display the GUI using all given CLI options
+[-log] ..write the normal logfile
+[-saveini] ..save changes made bei CLI in active .ini
+[-split <xxx>] ..split output at xxx MB
+[-demux, -tom2p, -topva, -tovdr, -tots, -filter] ..action types

@@ -1,0 +1,9 @@
+http://jakarta.apache.org/site/binindex.cgi
+
+Commons Net
+ORO
+
+http://archive.apache.org/dist/jakarta/commons/net/binaries/
+http://archive.apache.org/dist/jakarta/oro/binaries/
+
+info in commons.net

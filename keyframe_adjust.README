@@ -1,0 +1,22 @@
+Usage: keyframe_adjust.py usage: keyframe_adjust.py -fghuklstv [parameters]
+
+
+Options:
+  -h, --help            show this help message and exit
+  -f recordedfile, --recordedfile=recordedfile
+                        The absolute path and file name of the MythTV
+                        recording.
+  -g, --gencutlist      Generate a cut list if one does not exist but there is
+                        a skip list.
+  -k, --keeplog         Keep the log file after the userjob has completed
+                        successfully.
+  -l logpath, --logpath=logpath
+                        Specify a directory path to save the jobs log file
+  -s, --summary         Display a summary of the options that would be used
+                        during processing but exit before processing begins.
+                        Used this for debugging. No changes to the mpg file
+                        occur.
+  -t, --test            Test that the environment meets all the scripts
+                        dependencies.
+  -u, --usage           Display this help/usage text and exit.
+  -v, --version         Display version and author information

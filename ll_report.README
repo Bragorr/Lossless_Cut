@@ -1,0 +1,26 @@
+Usage: ll_report.py usage: ll_report.py -fhubBAstw [parameters]
+
+
+Options:
+  -h, --help            show this help message and exit
+  -f recordedfile, --recordedfile=recordedfile
+                        The absolute path and file name of the MythTV
+                        recording.
+  -b, --bugtext         Create a text bug report file:     "/current
+                        directory/videoname_LOSSLESS_BUG.txt"
+  -A, --all             Copy the whole recorded video to the bug report
+                        archive. This option overrides the 25Mg limitation and
+                        should only be used by the developer for problem
+                        analysis. The files would be far to large for being
+                        uploaded by users and likely violate copyright laws.
+  -B, --bugarchive      Create a text bug report and 25Mg sample video file:
+                        "/current directory/videoname_LOSSLESS_BUG.tar.bz2"
+  -s recordedfile, --starttime=recordedfile
+                        Video file sample start time in HH:MM:SS format.
+  -t, --test            Test that the environment meets all the scripts
+                        dependencies.
+  -u, --usage           Display this help/usage text and exit.
+  -v, --version         Display version and author information
+  -w, --wiki            Display a Wiki page table entry that can be used to
+                        identify recording device's whose recorded videos
+                        either work or fail with lossless_cut.py
